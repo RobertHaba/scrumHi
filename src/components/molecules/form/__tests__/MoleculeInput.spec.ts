@@ -5,24 +5,29 @@ import MoleculeInput from "../MoleculeInput.vue";
 import AtomLabelVue from "@/components/atoms/AtomLabel.vue";
 
 describe("MoleculeInput", () => {
-  test("renders text input", () => {
+  test("mount component", () => {
+    expect(MoleculeInput).toBeTruthy();
+
     const wrapper = mount(MoleculeInput, {
-      props: { type: "text", placeholder: "ASd" },
+      props: { type: "text", placeholder: "Name ex. Rafał" },
     });
     const inputText = wrapper.find("input[type=text]");
+
     expect(inputText.exists()).toBe(true);
   });
-  test("dont render input label", () => {
+
+  test("not rendered input label", () => {
     const wrapper = mount(MoleculeInput, {
-      props: { type: "text", placeholder: "ASd" },
+      props: { type: "text", placeholder: "Name ex. Rafał" },
     });
     expect(wrapper.findComponent(AtomLabelVue).exists()).toBe(false);
   });
-  test("has rendered input label", () => {
+
+  test("rendered input label", () => {
     const wrapper = mount(MoleculeInput, {
-      props: { type: "text", placeholder: "ASd" },
-      slots: { label: "Input label" },
+      props: { type: "text", placeholder: "Name ex. Rafał" },
+      slots: { label: "Name" },
     });
-    expect(wrapper.text()).toContain("Input label");
+    expect(wrapper.text()).toContain("Name");
   });
 });
