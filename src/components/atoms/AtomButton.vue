@@ -5,6 +5,7 @@
     :class="generateClass"
     :type="props.type"
     :to="props.to"
+    :disabled="disabled"
   >
     <slot></slot>
   </component>
@@ -12,7 +13,6 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
-import { RouterLink } from "vue-router";
 
 const props = withDefaults(
   defineProps<{
@@ -21,6 +21,7 @@ const props = withDefaults(
     variant?: "outlined";
     color?: "orange" | "blue";
     to?: object;
+    disabled?: boolean;
   }>(),
   {
     type: "button",
@@ -28,7 +29,7 @@ const props = withDefaults(
   }
 );
 
-const componentTag = computed(() => (props?.to ? RouterLink : "button"));
+const componentTag = computed(() => (props?.to ? "router-link" : "button"));
 
 const generateClass = computed(() => {
   return Object.values(props);
