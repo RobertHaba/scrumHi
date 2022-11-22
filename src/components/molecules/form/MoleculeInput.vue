@@ -6,10 +6,7 @@
     <div class="flex gap-2 w-full">
       <AtomInput
         class="w-full"
-        :type="props.type"
-        :name="name"
-        :placeholder="placeholder"
-        v-model="val"
+        v-model="value"
         @change="handleInput"
         v-bind="$attrs"
       />
@@ -30,15 +27,12 @@ import type { BaseInputProps } from "@/components/atoms/interface/Input";
 import { ref } from "vue";
 
 const props = defineProps<{
-  type?: BaseInputProps["type"];
-  placeholder: string;
-  name?: string;
   modelValue?: BaseInputProps["modelValue"];
 }>();
 
 const emit = defineEmits(["update:modelValue"]);
 // Refs
-const val = ref(props.modelValue);
+const value = ref(props.modelValue);
 // Methods
-const handleInput = () => emit("update:modelValue", val.value);
+const handleInput = () => emit("update:modelValue", value.value);
 </script>

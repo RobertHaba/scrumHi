@@ -13,7 +13,7 @@ import type { BaseInputProps } from "./interface/Input";
 // Props
 const props = withDefaults(
   defineProps<{
-    type: BaseInputProps["type"];
+    type?: BaseInputProps["type"];
     modelValue: BaseInputProps["modelValue"];
   }>(),
   {
