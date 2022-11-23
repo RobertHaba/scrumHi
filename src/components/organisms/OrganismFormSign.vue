@@ -59,6 +59,12 @@ import AtomDivider from "../atoms/AtomDivider.vue";
 import AtomTitle from "../atoms/AtomTitle.vue";
 import MoleculeInput from "../molecules/form/MoleculeInput.vue";
 
+// Composables
+import {
+  useRoomCodeValidation,
+  useUserNameValidation,
+} from "@/composables/forms/validation";
+
 // Store
 const userStore = useUserStore();
 const roomStore = useRoomStore();
@@ -69,12 +75,12 @@ const roomCode = ref<number>();
 const trySubmitForm = ref(false);
 
 // Computed
-const isRoomCodeValidate = computed(() => {
-  return roomCode.value?.toString().length === Room.MaxCodeLength;
-});
-const isUserNameValidate = computed(() => {
-  return userName.value.length && userName.value.length <= User.MaxLength;
-});
+const isRoomCodeValidate = computed(() =>
+  useRoomCodeValidation(roomCode.value)
+);
+const isUserNameValidate = computed(() =>
+  useUserNameValidation(userName.value)
+);
 const isValidateForm = computed(() => {
   return isRoomCodeValidate.value && isUserNameValidate.value;
 });

@@ -1,13 +1,13 @@
 <template>
-  <div>
-    <AtomInput
-      class="rounded-r-none !bg-transparent border border-gray"
-      v-model="value"
-      @change="handleInput"
-      v-bind="$attrs"
-    />
-    <AtomButton class="rouned- rounded-l-none border"><slot /></AtomButton>
-  </div>
+  <AtomInput
+    class="rounded-r-none !bg-transparent border border-gray"
+    v-model="value"
+    @change="handleInput"
+    v-bind="$attrs"
+  />
+  <AtomButton class="rounded-l-none border" @click="onClick">
+    <slot> </slot>
+  </AtomButton>
 </template>
 
 <script setup lang="ts">
@@ -18,6 +18,7 @@ import { ref } from "vue";
 
 const props = defineProps<{
   modelValue?: BaseInputProps["modelValue"];
+  onClick?: any;
 }>();
 
 const emit = defineEmits(["update:modelValue"]);
