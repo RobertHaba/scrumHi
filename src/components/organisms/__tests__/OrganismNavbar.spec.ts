@@ -55,6 +55,7 @@ describe("OrganismNavbar", () => {
     vi.advanceTimersByTime(2000);
     await flushPromises();
     expect(wrapper.find(".alert").exists()).toBe(false);
+    expect(wrapper.find(".dialog").exists()).toBe(false);
   });
 
   it("User entered correct room code", async () => {
@@ -67,5 +68,6 @@ describe("OrganismNavbar", () => {
     await wrapper.find("#joinRoom button").trigger("click");
 
     expect(roomStore.code).toBe(roomCodeTest);
+    expect(wrapper.find(".dialog").exists()).toBe(true);
   });
 });

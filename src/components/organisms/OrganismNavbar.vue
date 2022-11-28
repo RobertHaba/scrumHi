@@ -15,8 +15,13 @@
           >
             Dołącz
           </MoleculeSearch>
+          <MoleculeDialog ref="dialog">
+            <template #title>Dołączanie</template>
+          </MoleculeDialog>
         </AtomAlert>
-        <AtomButton variant="outlined"> Utwórz sesję </AtomButton>
+        <AtomButton variant="outlined" :to="{ name: RouteName.RoomCreator }">
+          Utwórz sesję
+        </AtomButton>
       </div>
     </div>
   </div>
@@ -38,6 +43,7 @@ import { useRoomCodeValidation } from "@/composables/forms/validation";
 
 // Enums
 import { RouteName } from "@/router/enums/Route";
+import MoleculeDialog from "../molecules/dialog/MoleculeDialog.vue";
 
 //Routes
 const route = useRoute();
@@ -48,6 +54,7 @@ const roomStore = useRoomStore();
 //Refs
 const roomCode = ref<number>();
 const errorAlert = ref({ text: "", status: false });
+const dialog = ref<InstanceType<typeof MoleculeDialog> | null>(null);
 
 //Computed
 const isSignRoute = computed(() => route.name === RouteName.Sign);
@@ -58,16 +65,24 @@ const isRoomCodeValidate = computed(() =>
 //Methods
 const handlerJoinToRoom = () => {
   errorAlert.value.status = false;
-  if (!isRoomCodeValidate.value) {
-    errorAlert.value.text = "Wprowadzono błędny kod pokoju";
-    errorAlert.value.status = true;
+
+  if (!checkRoom(!isRoomCodeValidate.value, "Wprowadzono błędny kod pokoju")) {
     return;
   }
-  if (roomCode.value === 999999) {
-    errorAlert.value.text = "Podany pokój nie istnieje";
-    errorAlert.value.status = true;
+
+  if (!checkRoom(roomCode.value === 999999, "Podany pokój nie istnieje")) {
     return;
   }
+
   roomStore.code = roomCode.value;
+  dialog.value?.open();
+};
+
+const checkRoom = (validator: boolean, text: string) => {
+  if (!validator) return true;
+
+  errorAlert.value.text = text;
+  errorAlert.value.status = true;
+  return false;
 };
 </script>

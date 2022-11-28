@@ -8,19 +8,22 @@
     :disabled="disabled"
   >
     <slot></slot>
+    <AtomIcon v-if="props.icon" :icon="props.icon" />
   </component>
 </template>
 
 <script setup lang="ts">
 import { computed } from "vue";
+import AtomIcon from "./AtomIcon.vue";
 
 const props = withDefaults(
   defineProps<{
     type?: "button" | "submit" | "reset";
     size?: "small" | "large";
     variant?: "outlined";
-    color?: "orange" | "blue";
+    color?: "orange" | "blue" | "dark";
     to?: object;
+    icon?: string;
     disabled?: boolean;
   }>(),
   {
@@ -32,8 +35,11 @@ const props = withDefaults(
 const componentTag = computed(() => (props?.to ? "router-link" : "button"));
 
 const generateClass = computed(() => {
-  return Object.values(props);
+  return [props.color, iconClass.value, variantClass.value];
 });
+
+const iconClass = computed(() => (props.icon ? "icon" : ""));
+const variantClass = computed(() => props.variant ?? "");
 </script>
 
 <style scoped>
@@ -43,6 +49,9 @@ const generateClass = computed(() => {
 .blue {
   @apply border-orange bg-orange text-white;
 }
+.dark {
+  @apply border-dark bg-dark text-white;
+}
 .outlined {
   @apply border bg-transparent;
 }
@@ -51,5 +60,8 @@ const generateClass = computed(() => {
 }
 .small {
   @apply px-4 text-xs;
+}
+.icon {
+  @apply p-2;
 }
 </style>
