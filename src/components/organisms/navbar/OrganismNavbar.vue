@@ -15,9 +15,8 @@
           >
             Dołącz
           </MoleculeSearch>
-          <MoleculeDialog ref="dialog">
-            <template #title>Dołączanie</template>
-          </MoleculeDialog>
+          <OrganismDialogJoin ref="dialog" v-if="dialogJoin">
+          </OrganismDialogJoin>
         </AtomAlert>
         <AtomButton variant="outlined" :to="{ name: RouteName.RoomCreator }">
           Utwórz sesję
@@ -28,22 +27,22 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed, nextTick, ref } from "vue";
 import { useRoomStore } from "@/stores/room";
 import { useRoute } from "vue-router";
 
 // Components
-import AtomAlert from "../atoms/AtomAlert.vue";
-import AtomButton from "../atoms/AtomButton.vue";
-import MoleculeSearch from "../molecules/form/MoleculeSearch.vue";
-import MoleculeLogo from "../molecules/MoleculeLogo.vue";
+import AtomAlert from "@/components/atoms/AtomAlert.vue";
+import AtomButton from "@/components/atoms/AtomButton.vue";
+import MoleculeSearch from "@/components/molecules/form/MoleculeSearch.vue";
+import MoleculeLogo from "@/components/molecules/MoleculeLogo.vue";
+import OrganismDialogJoin from "../dialog/OrganismDialogJoin.vue";
 
 // Composables
 import { useRoomCodeValidation } from "@/composables/forms/validation";
 
 // Enums
 import { RouteName } from "@/router/enums/Route";
-import MoleculeDialog from "../molecules/dialog/MoleculeDialog.vue";
 
 //Routes
 const route = useRoute();
@@ -54,7 +53,8 @@ const roomStore = useRoomStore();
 //Refs
 const roomCode = ref<number>();
 const errorAlert = ref({ text: "", status: false });
-const dialog = ref<InstanceType<typeof MoleculeDialog> | null>(null);
+const dialog = ref<typeof OrganismDialogJoin | null>();
+const dialogJoin = ref(false);
 
 //Computed
 const isSignRoute = computed(() => route.name === RouteName.Sign);
@@ -75,7 +75,7 @@ const handlerJoinToRoom = () => {
   }
 
   roomStore.code = roomCode.value;
-  dialog.value?.open();
+  openDialog();
 };
 
 const checkRoom = (validator: boolean, text: string) => {
@@ -84,5 +84,11 @@ const checkRoom = (validator: boolean, text: string) => {
   errorAlert.value.text = text;
   errorAlert.value.status = true;
   return false;
+};
+
+const openDialog = async () => {
+  dialogJoin.value = true;
+  await nextTick();
+  dialog.value?.open();
 };
 </script>

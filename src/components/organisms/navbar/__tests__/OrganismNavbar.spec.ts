@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import OrganismNavbar from "@/components/organisms/OrganismNavbar.vue";
+import OrganismNavbar from "@/components/organisms/navbar/OrganismNavbar.vue";
 import { flushPromises, mount } from "@vue/test-utils";
 import { RouteName } from "@/router/enums/Route";
 import { useRoute } from "vue-router";
@@ -58,7 +58,7 @@ describe("OrganismNavbar", () => {
     expect(wrapper.find(".dialog").exists()).toBe(false);
   });
 
-  it("User entered correct room code", async () => {
+  it("User entered correct room code and see dialog", async () => {
     const roomCodeTest = 123456;
     const wrapper = factory(piniaStore);
 

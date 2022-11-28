@@ -2,19 +2,10 @@
   <form class="flex flex-col gap-12 w-full" @submit.prevent="handlerJoinToRoom">
     <AtomTitle>Rozpocznij wycenianie sprintu szybko i wygodnie!</AtomTitle>
     <div class="flex flex-col gap-16">
-      <MoleculeInput
+      <OrganismInputName
         v-model="userName"
-        placeholder="Wprowadź swoją nazwę"
-        name="name"
-        maxlength="16"
-        id="userNameInput"
-      >
-        <template #label>Przedstaw się</template>
-        <template #hint v-if="trySubmitForm && !isUserNameValidate">
-          Twoja nazwa musi wynosić od {{ User.MinLength }} do
-          {{ User.MaxLength }} znaków.
-        </template>
-      </MoleculeInput>
+        :is-try-submit="trySubmitForm"
+      ></OrganismInputName>
       <MoleculeInput
         v-model="roomCode"
         type="number"
@@ -51,19 +42,20 @@ import { RouteName } from "@/router/enums/Route";
 import { useRoomStore } from "@/stores/room";
 import { useUserStore } from "@/stores/user";
 import { computed, ref } from "vue";
-import { User, Room } from "@/enums/FormSign";
+import { Room } from "@/enums/FormSign";
 
 // Components
-import AtomButton from "../atoms/AtomButton.vue";
-import AtomDivider from "../atoms/AtomDivider.vue";
-import AtomTitle from "../atoms/AtomTitle.vue";
-import MoleculeInput from "../molecules/form/MoleculeInput.vue";
+import AtomButton from "@/components/atoms/AtomButton.vue";
+import AtomDivider from "@/components/atoms/AtomDivider.vue";
+import AtomTitle from "@/components/atoms/AtomTitle.vue";
+import MoleculeInput from "@/components/molecules/form/MoleculeInput.vue";
 
 // Composables
 import {
   useRoomCodeValidation,
   useUserNameValidation,
 } from "@/composables/forms/validation";
+import OrganismInputName from "./OrganismInputName.vue";
 
 // Store
 const userStore = useUserStore();
@@ -91,6 +83,6 @@ const handlerJoinToRoom = () => {
 
   if (!isValidateForm.value) return;
   roomStore.code = roomCode.value;
-  userStore.name = userName.value;
+  userStore.setUserName(userName.value);
 };
 </script>

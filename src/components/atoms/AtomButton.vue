@@ -35,11 +35,17 @@ const props = withDefaults(
 const componentTag = computed(() => (props?.to ? "router-link" : "button"));
 
 const generateClass = computed(() => {
-  return [props.color, iconClass.value, variantClass.value];
+  return [
+    props.color,
+    iconClass.value,
+    variantClass.value,
+    disabledClass.value,
+  ];
 });
 
 const iconClass = computed(() => (props.icon ? "icon" : ""));
 const variantClass = computed(() => props.variant ?? "");
+const disabledClass = computed(() => (props.disabled ? "disabled" : ""));
 </script>
 
 <style scoped>
@@ -63,5 +69,8 @@ const variantClass = computed(() => props.variant ?? "");
 }
 .icon {
   @apply p-2;
+}
+.disabled {
+  @apply opacity-60;
 }
 </style>
